@@ -163,26 +163,8 @@
     </div>
   </section>
 
-  <section class="section" id="goals">
-    <span class="section-number">§ 04</span>
-    <h2 class="section-title">Difference maps as goals</h2>
-    <div class="section-body">
-      <p>
-        Pile-building is under-specified.
-        We want a model that builds not just a pile but a specific structure, defined by location, shape, size, and cut.
-        Goals are specified with a target elevation map that encodes desired additions and subtractions to soil height.
-        The model takes the per-cell difference between the current map and the target as a second image input.
-      </p>
-      <p>
-        Difference maps also enable corrective data collection.
-        Standard operations rarely generate corrective labels, and a self-supervised policy trained on end-state maps naturally exhibits out-of-distribution behavior at runtime.
-        Prescribing a target difference map makes it possible to collect supplementary supervised and DAgger data that expand the distribution and correct those failures.
-      </p>
-    </div>
-  </section>
-
   <section class="section" id="model">
-    <span class="section-number">§ 05</span>
+    <span class="section-number">§ 04</span>
     <h2 class="section-title">Model</h2>
     <div class="section-body">
       <p>
@@ -219,12 +201,31 @@
     </div>
   </section>
 
+  <section class="section" id="goals">
+    <span class="section-number">§ 04</span>
+    <h2 class="section-title">Cut/Fill maps as goals</h2>
+    <div class="section-body">
+      <p>
+        Pile-building is under-specified.
+        We want a model that builds not just a pile but a specific structure, defined by location, shape, size, and cut.
+        Goals are specified with a target elevation map that encodes desired additions and subtractions to soil height.
+        The model takes the per-cell difference between the current map and the target as a second image input.
+      </p>
+      <p>
+        Cut and fill maps also enable corrective data collection.
+        Standard operations rarely generate corrective labels, and a self-supervised policy trained on end-state maps naturally exhibits out-of-distribution behavior at runtime.
+        Prescribing a target difference map makes it possible to collect supplementary supervised and DAgger data that expand the distribution and correct those failures.
+        <!-- TODO: OKAY LAST SENTENCE -->
+      </p>
+    </div>
+  </section>
+
   <section class="section" id="data">
     <span class="section-number">§ 06</span>
     <h2 class="section-title">Cut/Fill Map</h2>
     <div class="section-body">
       <p>
-        We train a second set of models with an additional image source: a cut/fill map.
+        Thus, we train a second set of models with an additional image source: a cut/fill map.
       </p>
           Cut/Fill maps can be generated at train time with a pure <strong>self-supervised</strong> approach.
           The end-state elevation map from an episode is retroactively used as that episode's goal.
