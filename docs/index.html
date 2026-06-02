@@ -181,62 +181,8 @@
     </div>
   </section>
 
-  <section class="section" id="data">
-    <span class="section-number">§ 05</span>
-    <h2 class="section-title">Data regimes</h2>
-    <div class="section-body">
-      <p>We collect data under three regimes, each addressing a different gap:</p>
-      <ul>
-        <li>
-          <strong>Self-supervised (SS).</strong> 
-          The end-state elevation map from an episode is retroactively used as that episode's goal.
-          Minimally intrusive (standard operations produce the labels, and operators are not over-burdened).
-          Naturally biased toward distributions the policy already knows, which yields out-of-distribution behavior at runtime.
-        </li>
-        <li>
-          <strong>Supervised.</strong>
-          A human operator teleoperates toward a prescribed goal map.
-          Expands the distribution toward structures the self-supervised policy would never generate on its own.
-        </li>
-        <li>
-          <strong>DAgger.</strong>
-          A self-supervised policy drives while a human operator intervenes to correct.
-          Targets the failure modes the policy exhibits at runtime.
-        </li>
-      </ul>
-      <p>We evaluate three dataset compositions combining these regimes:</p>
-
-      <figure class="data-table">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Dataset</th>
-              <th scope="col">D4</th>
-              <th scope="col">D5</th>
-              <th scope="col">D6</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><th scope="row">Self-supervised</th><td>•</td><td>•</td><td>•</td></tr>
-            <tr><th scope="row">Supervised</th><td></td><td>•</td><td></td></tr>
-            <tr><th scope="row">DAgger</th><td></td><td></td><td>•</td></tr>
-          </tbody>
-        </table>
-        <figcaption>Tab. 1. Dataset compositions.</figcaption>
-      </figure>
-
-      <p>
-        A single operator collected about 14 hours of data across 8 days, on three earthmoving tasks, 
-        under a wide range of weather and soil conditions:
-        overcast, sun, rain, snow, wind, frozen, saturated, hard, dry.
-        The full corpus is 584 episodes and roughly 13.3 hours.
-        The task-specific dataset is 209 episodes.
-      </p>
-    </div>
-  </section>
-
   <section class="section" id="model">
-    <span class="section-number">§ 06</span>
+    <span class="section-number">§ 05</span>
     <h2 class="section-title">Model</h2>
     <div class="section-body">
       <p>
@@ -268,8 +214,42 @@
             <tr><th scope="row">Map image</th><td></td><td>•</td><td>•</td></tr>
           </tbody>
         </table>
-        <figcaption>Tab. 2. Model input configurations.</figcaption>
+        <figcaption>Tab. 1. Model input configurations.</figcaption>
       </figure>
+    </div>
+  </section>
+
+  <section class="section" id="data">
+    <span class="section-number">§ 06</span>
+    <h2 class="section-title">Cut/Fill Map</h2>
+    <div class="section-body">
+      <p>
+        We train a second set of models with an additional image source: a cut/fill map.
+      </p>
+          Cut/Fill maps can be generated at train time with a pure <strong>self-supervised</strong> approach.
+          The end-state elevation map from an episode is retroactively used as that episode's goal.
+          This approach has the benefit of being minimally intrusive
+          (standard operations produce the labels, and operators are not over-burdened).
+      </p>
+
+      <p>Again, we evaluate three image-input configurations:</p>
+      <figure class="data-table">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Dataset</th>
+              <th scope="col">M4</th>
+              <th scope="col">M5</th>
+              <th scope="col">M6</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Front image</th><td>•</td><td></td><td>•</td></tr>
+            <tr><th scope="row">Map image</th><td></td><td>•</td><td>•</td></tr>
+            <tr><th scope="row">Cut/Fill image</th><td>•</td><td>•</td><td>•</td></tr>
+          </tbody>
+        </table>
+        <figcaption>Tab. 2. Cut/Fill Model input configurations.</figcaption>
 
       <p>
         Future work will move to the π<sub>0.5</sub> policy family.
@@ -279,6 +259,21 @@
 
   <section class="section" id="platform">
     <span class="section-number">§ 07</span>
+    <h2 class="section-title">Dataset</h2>
+    <div class="section-body">
+      </figure>
+      <p>
+        A single operator collected a bit over 13 hours of data across 8 days, on three earthmoving tasks,
+        under a wide range of weather and soil conditions:
+        overcast, sun, rain, snow, wind, frozen, saturated, hard, dry.
+        The full corpus is 584 episodes and roughly 13.3 hours.
+        The task-specific dataset ('build a pile) is 209 episodes.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="platform">
+    <span class="section-number">§ 08</span>
     <h2 class="section-title">Platform</h2>
     <div class="section-body">
       <p>
@@ -292,7 +287,7 @@
   </section>
 
   <section class="section" id="infra">
-    <span class="section-number">§ 08</span>
+    <span class="section-number">§ 09</span>
     <h2 class="section-title">System infrastructure</h2>
     <div class="section-body">
       <p>
@@ -314,7 +309,7 @@
   </section>
 
   <section class="section" id="findings">
-    <span class="section-number">§ 09</span>
+    <span class="section-number">§ 10</span>
     <h2 class="section-title">Early conclusions</h2>
     <div class="section-body">
       <ul>
@@ -343,7 +338,7 @@
   </section>
 
   <section class="section" id="future">
-    <span class="section-number">§ 10</span>
+    <span class="section-number">§ 11</span>
     <h2 class="section-title">Future work</h2>
     <div class="section-body">
       <span class="subsection-label">Data</span>
@@ -383,7 +378,7 @@
   </section>
 
   <section class="section" id="references">
-    <span class="section-number">§ 11</span>
+    <span class="section-number">§ 12</span>
     <h2 class="section-title">References</h2>
     <div class="section-body">
       <ul class="reference-list">
@@ -412,7 +407,7 @@
   </section>
 
   <section class="section" id="cite">
-    <span class="section-number">§ 12</span>
+    <span class="section-number">§ 13</span>
     <h2 class="section-title">Cite</h2>
     <div class="section-body">
       <p class="bibtex-label">BibTeX</p>
