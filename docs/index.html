@@ -65,10 +65,10 @@
       <!-- <a href="#" rel="noopener"> -->
         <!-- <i class="fa fa-github" aria-hidden="true"></i>Code -->
       <!-- </a> -->
-      <a href="#" rel="noopener">
+      <a href="poster.pdf" target="_blank" rel="noopener">
         <i class="fa fa-file-text-o" aria-hidden="true"></i>Poster
       </a>
-      <a href="#" rel="noopener">
+      <a href="#videos" rel="noopener">
         <i class="fa fa-play-circle-o" aria-hidden="true"></i>Videos
       </a>
     </nav>
@@ -91,7 +91,7 @@
       <div id="demo-info" class="demo-info"></div>
     </div>
 
-    <div class="video-grid">
+    <div class="video-grid" id="videos">
       <div class="video-card">
         <div class="video-wrapper">
           <iframe src="https://www.youtube.com/embed/rZa_ldUoF7M" title="Autonomous Earthmoving | an evaluation sample" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -128,6 +128,7 @@
     <h2 class="section-title">Why earthmoving is hard</h2>
     <div class="section-body">
       <p>
+        <!-- TODO: Change this. It's like the most AI written thing I have ever read lmao -->
         VLAs have succeeded in settings where the variation is semantic.
         Objects and instructions change, the physics does not.
         Earthmoving inverts this.
@@ -151,14 +152,11 @@
         a measure of blade soil accumulation, a heightmap representation of the environment, and dynamic updates throughout task runtime.
       </p>
       <p>
-        The map is initialized from an initial scan of the work site by the vehicle and is updated continuously as the vehicle operates.
-        Blade motion through the terrain updates heights by swept-volume displacement.
-        Soil failure physics erodes material to produce realistic piling and spoil.
-        Near-vehicle height estimation closes the information gap under the blade, which is critical for policy learning.
-      </p>
-      <p>
-        Where the blade or a recent interaction occludes the camera, the map still carries state.
-        The policy reasons about accumulated soil and distant terrain in the same representation.
+        The map is initialized from a scan of the work site by the vehicle and is updated continuously as the vehicle operates.
+        Notably, the terrain directly infront of the blade is occluded, as the blade itself blocks the view of cab-mounted sensors.
+        Thus, this portion of the map is updated in real time by swept-volume displacement estimates (TODO: expand on this).
+        Soil failure physics then erodes material to produce realistic piling and spoil.
+        The modeling of this occluded portion of the map is critical for policy learning, as it provides policies with real-time updates on blade accumulated soil.
       </p>
     </div>
   </section>
