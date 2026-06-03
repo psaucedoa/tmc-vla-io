@@ -112,13 +112,39 @@
     <h2 class="section-title">Abstract</h2>
     <div class="section-body">
       <p class="lead-question">
-        How do we adapt VLAs, pretrained on bimanual robotic manipulation tasks, for earthmoving operations on heavy equipment?
+        How do we begin building general-purpose autonomous earthmoving using existing VLA architectures?
       </p>
       <p>
-        Vision–language–action models (VLAs) have demonstrated remarkable generalization in structured environments.
-        Their efficacy in complex field environments, however, remains largely unexplored.
-        Field robotics tasks like earthmoving present unique challenges: mobile manipulation of deformable terrain, widely varying environmental conditions, and high contact forces.
-        This study investigates how the success of VLAs can be extended to autonomous earthmoving by utilizing terrain map-conditioned policies to achieve robust performance across diverse soil types.
+        <b>Vision-Language-Action</b> (VLA) models have demonstrated strong generalization in structured manipulation
+        and navigation domains.
+        However, their application to large-scale <b>field robotics</b> tasks, such as autonomous earthmoving, remains limited.
+        Autonomous earthmoving presents unique challenges, including deformable terrain, long-horizon tasks,
+        limited visibility at the tool-terrain interface, and highly variable environmental conditions.
+      </p>
+
+      <p>
+        This work investigates terrain map-conditioned VLAs for <b>autonomous earthmoving</b>.
+        We augment conventional camera observations and vehicle state features with top-down egocentric elevation maps
+        that represent local terrain geometry and blade-induced soil displacement.
+        Maps are produced by combining LiDAR imaging with a light-weight physics engine, tracking the blade movement
+        through the terrain and updating heights via swept volume displacements and soil failure physics
+        (producing soil piling and spoil creation).
+        These maps are continuously updated during operation and provide spatial context unavailable to vision-only
+        policies such as estimated terrain height near the vehicle where key occluded interactions occur.
+        To extend our policy toward general <b>goal-conditioned earthmoving tasks</b>, we leverage cut/fill maps that
+        encode desired terrain modifications relative to the current environment.
+        To allow for easy data collection and enable self-supervised goal conditioning, we use a post processing
+        trick, where the episode’s final terrain map is treated as the goal during reprocessing.
+      </p>
+
+      <p>
+        We explored the effectiveness of elevation maps as model input through an ablation study.
+        Initial policies were trained using SmolVLA with training data collected on a robotic compact track
+        loader under diverse soil and weather conditions.
+        Preliminary results demonstrate that cut/fill map conditioning improves task performance relative to
+        image-only baselines, and that map only policies can achieve near parity with image based models.
+        These findings suggest that goal-prompted terrain-aware policies may be a key enabler for <b>general-purpose
+        earth moving</b>.
       </p>
     </div>
   </section>
@@ -129,15 +155,19 @@
     <div class="section-body">
       <p>
         <!-- TODO: Change this. It's like the most AI written thing I have ever read lmao -->
-        VLAs have succeeded in settings where the variation is semantic.
-        Objects and instructions change, the physics does not.
-        Earthmoving inverts this.
-        Soil behavior shifts with moisture, compaction, and weather.
-        Contact forces are high and nonlinear.
-        The blade occludes the material it accumulates.
-        Depth, the cue a camera-only policy leans on, is unreliable over loose, uniformly textured soil.
-        Tasks unfold over a large work area and a long horizon, so no single camera frame carries the context.
+        Soil behavior shifts with moisture, compaction, and temperature, while contact forces are high and nonlinear.
+        It can also be difficult to discern depth and task progress through a camera only approach, as the environment that is being
+        worked upon may be visually homogenous, and the context of the work being done is limited to the contents of a single
+        egocentric camera imageframe.
+        Additionally, the blade on earthmoving equipment outright occludes important information like accumulated soil and cut depth, making it
+        difficult for a policy to know if any soil is being moved at all.
+        Finally, earthmoving operations unfold over a large work area and a long time horizon, making it far easier for errors to compound
+        and derail the task at hand.
       </p>
+      <!-- <p>
+        Meanwhile, engineers typically request <i>specific</i> earthen structures or tasks, of particualr geometries and at particular locations.
+        Translating those requirements into ... (TODO: finish?)
+      </p> -->
     </div>
   </section>
 
@@ -146,17 +176,17 @@
     <h2 class="section-title">Elevation maps as conditioning</h2>
     <div class="section-body">
       <p>
-        The policy needs a representation of terrain state that survives those gaps.
-        We feed it an egocentric top-down elevation map alongside the camera image.
-        The map provides three things a camera and joint state alone cannot:
-        a measure of blade soil accumulation, a heightmap representation of the environment, and dynamic updates throughout task runtime.
+        Luckily, through map images  we can track progress, estimate missing soil observations, and provide an interface that allows for
+        the parametrization of earthmoving tasks.
+        We feed the model an egocentric top-down elevation map alongside the camera image.
+        The map provides a measure of blade soil accumulation, a heightmap representation of the environment, and dynamic terrain
+        elevation updates throughout task runtime.
       </p>
       <p>
         The map is initialized from a scan of the work site by the vehicle and is updated continuously as the vehicle operates.
-        Notably, the terrain directly infront of the blade is occluded, as the blade itself blocks the view of cab-mounted sensors.
-        Thus, this portion of the map is updated in real time by swept-volume displacement estimates (TODO: expand on this).
-        Soil failure physics then erodes material to produce realistic piling and spoil.
-        The modeling of this occluded portion of the map is critical for policy learning, as it provides policies with real-time updates on blade accumulated soil.
+        The blade-occluded portion of the map is updated in real time with simplified soil interaction physics.
+        This same physics model then erodes material to produce realistic piling and spoil on the map.
+        <!-- The modeling of this occluded portion of the map is critical for policy learning, as it provides policies with real-time updates on blade accumulated soil. -->
       </p>
     </div>
   </section>
@@ -208,12 +238,19 @@
         We want a model that builds not just a pile but a specific structure, defined by location, shape, size, and cut.
         Goals are specified with a target elevation map that encodes desired additions and subtractions to soil height.
         The model takes the per-cell difference between the current map and the target as a second image input.
+        These maps also enable better data collection, as we can show an operator cut/fill maps, align on a specific strategy,
+        and record their actions.
+
       </p>
       <p>
-        Cut and fill maps also enable corrective data collection.
-        Standard operations rarely generate corrective labels, and a self-supervised policy trained on end-state maps naturally exhibits out-of-distribution behavior at runtime.
-        Prescribing a target difference map makes it possible to collect supplementary supervised and DAgger data that expand the distribution and correct those failures.
+        Cut and fill maps also enable <i>corrective</i> data collection.
+        As the self-supervised policy trained on end-state maps naturally exhibits out-of-distribution behavior at runtime,
+        we can use the cut/fill map to allow for Dataset Aggregation (DAgger) by showing a human operator the current
+        map states and correct those failures live.
+        These episodes are then fed back into the dataset for the next policy.
         <!-- TODO: OKAY LAST SENTENCE -->
+      </p>
+      <p>
       </p>
     </div>
   </section>
