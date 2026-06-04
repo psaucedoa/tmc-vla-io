@@ -255,7 +255,7 @@
     </div>
   </section>
 
-  <section class="section" id="data">
+  <section class="section" id="model-ii">
     <span class="section-number">§ 06</span>
     <h2 class="section-title">Model II</h2>
     <div class="section-body">
@@ -293,7 +293,7 @@
     </div>
   </section>
 
-  <section class="section" id="platform">
+  <section class="section" id="dataset">
     <span class="section-number">§ 07</span>
     <h2 class="section-title">Dataset</h2>
     <div class="section-body">
@@ -305,7 +305,62 @@
         The full corpus is 584 episodes and roughly 13.3 hours.
         The task-specific dataset ('build a pile) is 209 episodes.
       </p>
-    </div>
+
+      <figure class="data-table">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Observation</th>
+              <th scope="col">Dim</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Front Image</th><td>[3x256x256]</td></tr>
+            <tr><th scope="row">Elevation Map</th><td>[3x256x256]</td></tr>
+            <tr><th scope="row">Cut/Fill Map*</th><td>[3x256x256]</td></tr>
+            <tr><th scope="row">Joint States</th><td>[1x10]</td></tr>
+            <tr><th scope="row">Odom</th><td>[1x6]</td></tr>
+            <tr><th scope="row">IMU</th><td>[1x2]</td></tr>
+            <tr><th scope="row">RPM</th><td>[1x1]</td></tr>
+          </tbody>
+        </table>
+        <figcaption>Tab. 3. Recorded Observations. <i>*Cut/Fill map can be generated during data post processing.</i></figcaption>
+
+
+      <figure class="data-table">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Joint State</th>
+              <th scope="col">Dim</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">tracks.rotational.position</th></tr>
+            <tr><th scope="row">tracks.rotational.velocity</th></tr>
+            <tr><th scope="row">tracks.linear.position</th></tr>
+            <tr><th scope="row">tracks.linear.velocity</th></tr>
+            <tr><th scope="row">virtual_lift_arm.position</th></tr>
+            <tr><th scope="row">virtual_lift_arm.velocity</th></tr>
+            <tr><th scope="row">blade_pitch.position</th></tr>
+            <tr><th scope="row">blade_pitch.velocity</th></tr>
+            <tr><th scope="row">blade_roll.position</th></tr>
+            <tr><th scope="row">blade_roll.velocity</th></tr>
+            <tr><th scope="row">twist.x</th></tr>
+            <tr><th scope="row">twist.x</th></tr>
+            <tr><th scope="row">twist.y</th></tr>
+            <tr><th scope="row">twist.y</th></tr>
+            <tr><th scope="row">twist.z</th></tr>
+            <tr><th scope="row">twist.z</th></tr>
+            <tr><th scope="row">vehicle_pitch</th></tr>
+            <tr><th scope="row">vehicle_roll</th></tr>
+            <tr><th scope="row">RPM</th></tr>
+          </tbody>
+        </table>
+        <figcaption>Tab. 4. Joint States List. <i>*Cut/Fill map can be generated during data post processing.</i></figcaption>
+
+
+      </div>
   </section>
 
   <section class="section" id="platform">
